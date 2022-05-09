@@ -32,6 +32,9 @@ Route::middleware('auth')
         Route::resource('users', 'UserController');
 
         Route::get('/users/{user}/posts', 'UserPostController@index');
+});
 
+Route::fallback(function(){
+    return view('guest.home');
 });
 

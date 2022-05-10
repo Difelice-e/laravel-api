@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Http\Request;
 
-class Postcontroller extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +15,10 @@ class Postcontroller extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['category','tags'])
-            ->where('published_at','!=',null)
-            ->orderBy('published_at','desc')
-            ->paginate(12);
-            
+        $posts = Post::with(['category', 'tags'])->limit(12)->get();
+
         return response()->json([
-            'posts' => $posts,
+            'post' => $posts,
             'success' => true
         ]);
     }

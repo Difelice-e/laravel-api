@@ -1992,6 +1992,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1999,16 +2007,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      posts: []
+      posts: [],
+      lastPage: 0,
+      currentPage: 1
     };
   },
   methods: {
     fetchPosts: function fetchPosts() {
       var _this = this;
 
-      axios.get('/api/posts').then(function (res) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get('/api/posts', {
+        params: {
+          page: page
+        }
+      }).then(function (res) {
         var posts = res.data.posts;
-        _this.posts = posts;
+        var data = posts.data,
+            last_page = posts.last_page,
+            current_page = posts.current_page;
+        _this.posts = data;
+        _this.currentPage = current_page;
+        _this.lastPage = last_page;
       })["catch"](function (err) {
         console.warn(err);
       });
@@ -3167,7 +3187,7 @@ var render = function () {
         ]),
         _vm._v(" "),
         _vm.post.category
-          ? _c("p", { staticClass: "text-orange-400 mb-2" }, [
+          ? _c("p", { staticClass: "text-sm text-orange-400 mb-2" }, [
               _vm._v(_vm._s(_vm.post.category.name)),
             ])
           : _vm._e(),
@@ -3266,7 +3286,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "py-12" }, [
     _vm._m(0),
     _vm._v(" "),
     _c(
@@ -3280,6 +3300,31 @@ var render = function () {
       }),
       1
     ),
+    _vm._v(" "),
+    _c("div", { staticClass: "container py-4" }, [
+      _c(
+        "ul",
+        { staticClass: "pagination flex justify-center gap-4 items-center" },
+        _vm._l(_vm.lastPage, function (n) {
+          return _c(
+            "li",
+            {
+              key: n,
+              staticClass:
+                "dot cursor-pointer rounded-full h-10 w-10 flex items-center justify-center text-sm",
+              class: _vm.currentPage === n ? "bg-orange-400" : "bg-white/30",
+              on: {
+                click: function ($event) {
+                  return _vm.fetchPosts(n)
+                },
+              },
+            },
+            [_vm._v(_vm._s(n))]
+          )
+        }),
+        0
+      ),
+    ]),
   ])
 }
 var staticRenderFns = [

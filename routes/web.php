@@ -34,11 +34,15 @@ Route::middleware('auth')
         Route::get('/users/{user}/posts', 'UserPostController@index');
 });
 
+<<<<<<< HEAD
 // Route::get('{any?}',function() {
 //     return view('guest.home');
 // })->where('any','.*');
 
 Route::fallback(function() {
+=======
+Route::fallback(function(){
+>>>>>>> 482b0535c1d047182c164bd751b194c3d3d17862
     return view('guest.home');
 });
 
